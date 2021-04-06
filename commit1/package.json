@@ -1,0 +1,14 @@
+{
+  "name": "commit1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "lpz-cli": "./bin/lpz-cli.js"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}
