@@ -10,5 +10,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "chokidar": "^3.5.1",
+    "serve-handler": "^6.1.3"
+  }
 }
