@@ -1,16 +1,27 @@
 const fs = require("fs");
 const path = require("path");
+const url = require("url");
 const http = require("http");
 const serverHandler = require("serve-handler");
 const { fileWatcher } = require("./fileWatcher");
 const hrm = fs.readFileSync(path.resolve(__dirname, "./hrm.js"));
 
 const server = http.createServer((req, res) => {
-  res.setHeader("Content-Type", "application/javascript");
-  res.end(hrm);
-  /* return serverHandler(req, res, {
-    public: path.resolve(__dirname, "./"),
-  }); */
+  const pathname = url.parse(req.url).pathname;
+  if (pathname.indexOf("__hrm") !== -1) {
+    res.setHeader("Content-Type", "application/javascript");
+    const stream = fs.createReadStream(path.resolve(__dirname, "./hrm.js"));
+    stream.on("open", () => {
+      stream.pipe(res);
+    });
+    stream.on("error", (err) => {
+      res.end(err);
+    });
+  }
+
+  serverHandler(req, res, {
+    rewrites: [{ source: "**", destination: "/index.html" }],
+  });
 });
 
 const Ws = require("ws");
@@ -25,7 +36,6 @@ wss.on("connection", (ws) => {
 });
 
 fileWatcher((payload) => {
-  // console.log(sockets);
   sockets.forEach((socket) => socket.send(JSON.stringify(payload)));
 });
 

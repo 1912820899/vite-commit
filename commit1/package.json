@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "lpz-cli": "./bin/lpz-cli.js"
+    "lpze": "./bin/lpze.js"
   },
   "scripts": {},
   "keywords": [],
@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "chokidar": "^3.5.1",
-    "serve-handler": "^6.1.3"
+    "magic-string": "^0.25.7",
+    "serve-handler": "^6.1.3",
+    "ws": "^7.4.4"
   }
 }
