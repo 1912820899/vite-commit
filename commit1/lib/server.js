@@ -8,15 +8,14 @@ const hrm = fs.readFileSync(path.resolve(__dirname, "./hrm.js"));
 
 const server = http.createServer((req, res) => {
   const pathname = url.parse(req.url).pathname;
-  if (pathname.indexOf("__hrm") !== -1) {
-    res.setHeader("Content-Type", "application/javascript");
-    const stream = fs.createReadStream(path.resolve(__dirname, "./hrm.js"));
-    stream.on("open", () => {
-      stream.pipe(res);
-    });
-    stream.on("error", (err) => {
-      res.end(err);
-    });
+  if (pathname === "/_hrm") {
+    return sendJs(hrm, res);
+  } else if (pathname.startsWith("/__modules/")) {
+    return moduleMiddleware(pathname.replace("/__modules/", ""), res);
+  } else if (pathname.endsWith(".vue")) {
+    return vueMiddleware(req, res);
+  } else if (pathname.endsWith(".js")) {
+    return res.end("js");
   }
 
   serverHandler(req, res, {
@@ -25,6 +24,9 @@ const server = http.createServer((req, res) => {
 });
 
 const Ws = require("ws");
+const { sendJs } = require("./send");
+const { moduleMiddleware } = require("./moduleMiddleware");
+const { vueMiddleware } = require("./vueMiddle");
 const wss = new Ws.Server({ server });
 const sockets = new Set();
 wss.on("connection", (ws) => {
