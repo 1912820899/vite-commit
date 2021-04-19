@@ -1,5 +1,5 @@
 <template>
-  <div class="djdj">
+  <div class="djd221j">
     <div>djdj</div>
   </div>
 </template>
@@ -7,8 +7,8 @@
 export default {
   data() {
     return {
-      dj: 1,
+      dj: 12,
     };
   },
-};
+}
 </script>

@@ -1,8 +1,13 @@
 const resolveCwd = require("resolve-cwd");
 const { sendStreamJS } = require("./send");
-
+const path = require("path");
 module.exports.moduleMiddleware = (id, res) => {
-  const modulePath = resolveCwd(id);
+  let modulePath = resolveCwd(id);
+  if (id === "vue") {
+    modulePath = path.join(
+      path.dirname(modulePath),
+      "dist/vue.runtime.esm-browser.js"
+    );
+  }
   sendStreamJS(modulePath, res);
-  res.end("ok");
 };
