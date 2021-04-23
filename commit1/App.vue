@@ -1,13 +1,13 @@
 <template>
-  <div class="djd221j">
-    <div>23</div>
+  <div class="">
+    <div>{{ dj }}</div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      dj: 112,
+      dj: "1",
     };
   },
 }

@@ -21,7 +21,6 @@ const server = http.createServer((req, res) => {
   } else if (pathname.endsWith(".vue")) {
     return vueMiddleware(req, res);
   } else if (pathname.endsWith(".js")) {
-    console.log(pathname);
     try {
       const jsFile = fs.readFileSync(
         path.resolve(process.cwd(), `.${pathname}`),

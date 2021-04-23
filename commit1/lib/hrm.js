@@ -11,13 +11,13 @@ socket.addEventListener("message", ({ data }) => {
       break;
     case "reload":
       import(`${path}?t=${Date.now()}`).then((m) => {
-        // HMRRuntime.reload(path, m.default);
-        console.log(`[lpze] ${path} reloaded.`);
+        __VUE_HMR_RUNTIME__.reload(path, m.default);
+        console.log(`[lpze] ${path} reloaded.`, m.default);
       });
       break;
     case "rerender":
       import(`${path}?type=template&t=${Date.now()}`).then((m) => {
-        // HMRRuntime.rerender(path, m.default);
+        __VUE_HMR_RUNTIME__.rerender(path, m.render);
         console.log(`[lpze] ${path} rerender.`);
       });
       break;

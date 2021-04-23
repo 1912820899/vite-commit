@@ -9,15 +9,26 @@ exports.fileWatcher = (callback) => {
     ignored: [/node_modules/],
   });
 
-  watcher.on("change", (path) => {
+  watcher.on("change", (file) => {
+    const resourcePath = "/" + path.relative(process.cwd(), file);
     const notify = {
       type: "",
-      path: path,
+      path: resourcePath,
     };
-    if (path.endsWith(".vue")) {
-      const { descriptor, preDescriptor } = parse(path);
+    if (file.endsWith(".vue")) {
+      const { descriptor, preDescriptor } = parse(file);
+      console.log(descriptor.template.content, preDescriptor.template.content);
       if (!preDescriptor) {
         // 首次加载
+        return;
+      }
+      if (
+        (descriptor.template && descriptor.template.content) !==
+        (preDescriptor.template && preDescriptor.template.content)
+      ) {
+        console.log(`[hmr:rerender] ${resourcePath}`);
+        notify.type = "rerender";
+        callback(notify);
         return;
       }
       if (
@@ -25,21 +36,13 @@ exports.fileWatcher = (callback) => {
           preDescriptor.script &&
         preDescriptor.script.content
       ) {
-        console.log(`[hmr:reload] ${path}`);
+        console.log(`[hmr:reload] ${resourcePath}`);
         notify.type = "reload";
         callback(notify);
         return;
       }
-      if (
-        (descriptor.template && descriptor.template.content) !==
-        (preDescriptor.template && preDescriptor.template.content)
-      ) {
-        console.log(`[hmr:rerender] ${path}`);
-        notify.type = "rerender";
-        callback(notify);
-      }
     } else {
-      console.log(`[hmr:full-reload] ${path}`);
+      console.log(`[hmr:full-reload] ${resourcePath}`);
       notify.type = "full-reload";
       callback(notify);
       return;
