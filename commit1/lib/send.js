@@ -12,5 +12,5 @@ module.exports.sendStreamJS = (source, res) => {
 
 module.exports.sendJs = (source, res) => {
   res.setHeader("Content-Type", "application/javascript");
-  return res.end(source);
+  res.end(source);
 };

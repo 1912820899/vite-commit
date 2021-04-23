@@ -20,13 +20,20 @@ exports.fileWatcher = (callback) => {
         // 首次加载
         return;
       }
-      if (descriptor.script?.content !== preDescriptor.script?.content) {
+      if (
+        (descriptor.script && descriptor.script.content) !==
+          preDescriptor.script &&
+        preDescriptor.script.content
+      ) {
         console.log(`[hmr:reload] ${path}`);
         notify.type = "reload";
         callback(notify);
         return;
       }
-      if (descriptor.template?.content !== preDescriptor.template?.content) {
+      if (
+        (descriptor.template && descriptor.template.content) !==
+        (preDescriptor.template && preDescriptor.template.content)
+      ) {
         console.log(`[hmr:rerender] ${path}`);
         notify.type = "rerender";
         callback(notify);

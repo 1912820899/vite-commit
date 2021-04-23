@@ -10,12 +10,18 @@ const hrm = fs.readFileSync(path.resolve(__dirname, "./hrm.js"));
 const server = http.createServer((req, res) => {
   const pathname = url.parse(req.url).pathname;
   if (pathname === "/__hrmClient") {
+    /* const jsFile = fs.readFileSync(
+      path.resolve(__dirname, "./hrm.js"),
+      "utf-8"
+    );
+    console.log(jsFile); */
     return sendJs(hrm, res);
   } else if (pathname.startsWith("/__modules/")) {
     return moduleMiddleware(pathname.replace("/__modules/", ""), res);
   } else if (pathname.endsWith(".vue")) {
     return vueMiddleware(req, res);
   } else if (pathname.endsWith(".js")) {
+    console.log(pathname);
     try {
       const jsFile = fs.readFileSync(
         path.resolve(process.cwd(), `.${pathname}`),

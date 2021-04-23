@@ -1,13 +1,13 @@
 <template>
   <div class="djd221j">
-    <div>231</div>
+    <div>23</div>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      dj: 12,
+      dj: 112,
     };
   },
 }
