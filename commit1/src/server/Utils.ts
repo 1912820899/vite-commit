@@ -1,5 +1,10 @@
-const fs = require("fs");
-module.exports.sendStreamJS = (source, res) => {
+import fs from "fs";
+import { ServerResponse } from "http";
+
+export const sendStreamJS = (
+  source: string | Buffer,
+  res: ServerResponse
+) => {
   res.setHeader("Content-Type", "application/javascript");
   const stream = fs.createReadStream(source);
   stream.on("open", () => {
@@ -10,7 +15,7 @@ module.exports.sendStreamJS = (source, res) => {
   });
 };
 
-module.exports.sendJs = (source, res) => {
+export const sendJs = (source: string | Buffer, res: ServerResponse) => {
   res.setHeader("Content-Type", "application/javascript");
   res.end(source);
 };

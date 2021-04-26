@@ -1,6 +1,7 @@
-const resolveCwd = require("resolve-cwd");
-const { sendStreamJS } = require("./send");
-const path = require("path");
+import path from 'path';
+import resolveCwd from 'resolve-cwd';
+const { sendStreamJS } = require("../../lib/send");
+
 module.exports.moduleMiddleware = (id, res) => {
   let modulePath = resolveCwd(id);
   if (id === "vue") {

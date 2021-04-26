@@ -1,18 +1,18 @@
-const url = require("url");
-const fs = require("fs");
-const path = require("path");
-const { compileTemplate } = require("@vue/compiler-sfc");
-const { sendStreamJS, sendJs } = require("./send");
-const { parse } = require("./parseSFC");
-const { rewrite } = require("./moduleReWrite");
-module.exports.vueMiddleware = (req, res) => {
+import path from "path";
+import { compileTemplate } from "@vue/compiler-sfc";
+import { sendJs } from "./Utils";
+import { parseSFC } from "./parseSFC";
+import { rewrite } from "./moduleRewrite";
+import { IncomingMessage, ServerResponse } from "http";
+
+export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
   const { pathname, searchParams } = new URL(
-    req.url,
+    req.url!,
     `http://${req.headers.host}`
   );
   const type = searchParams.get("type");
   const filename = path.join(process.cwd(), `.${pathname}`);
-  const { descriptor, errors } = parse(filename);
+  const { descriptor } = parseSFC(filename);
   if (!type) {
     let code = "import '/__hrmClient';\n";
     if (descriptor.script) {
@@ -35,7 +35,7 @@ module.exports.vueMiddleware = (req, res) => {
     return sendJs(code, res);
   }
   if (type === "template") {
-    const { code, errors } = compileTemplate({
+    const { code } = compileTemplate({
       source: descriptor.template.content,
       filename,
       id: "v-data-test",

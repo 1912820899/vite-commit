@@ -1,10 +1,12 @@
-const path = require("path");
-const chokidar = require("chokidar");
-const { parse } = require("./parseSFC");
+import chokidar from "chokidar";
+import { parseSFC } from "./parseSFC";
+import path from "path";
+export interface ServerNotification {
+  type: string;
+  path?: string;
+}
 
-exports.fileWatcher = (callback) => {
-  const log = console.log.bind(console);
-
+export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
   const watcher = chokidar.watch(process.cwd(), {
     ignored: [/node_modules/],
   });
@@ -16,8 +18,7 @@ exports.fileWatcher = (callback) => {
       path: resourcePath,
     };
     if (file.endsWith(".vue")) {
-      const { descriptor, preDescriptor } = parse(file);
-      console.log(descriptor.template.content, preDescriptor.template.content);
+      const { descriptor, preDescriptor } = parseSFC(file);
       if (!preDescriptor) {
         // 首次加载
         return;

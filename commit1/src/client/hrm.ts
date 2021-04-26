@@ -1,5 +1,5 @@
-// import { HMRRuntime } from "vue";
-
+import { HMRRuntime } from "vue";
+declare var __VUE_HMR_RUNTIME__: HMRRuntime;
 const socket = new WebSocket(`ws://${location.host}`);
 
 // Listen for messages
