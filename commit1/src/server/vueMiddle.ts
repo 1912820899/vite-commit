@@ -4,6 +4,7 @@ import { sendJs } from "./Utils";
 import { parseSFC } from "./parseSFC";
 import { rewrite } from "./moduleRewrite";
 import { IncomingMessage, ServerResponse } from "http";
+import { URL } from "node:url";
 
 export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
   const { pathname, searchParams } = new URL(

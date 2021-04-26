@@ -4,7 +4,7 @@ const socket = new WebSocket(`ws://${location.host}`);
 
 // Listen for messages
 socket.addEventListener("message", ({ data }) => {
-  const { type, path, index } = JSON.parse(data);
+  const { type, path } = JSON.parse(data);
   switch (type) {
     case "connected":
       console.log("ws热更新连接成功");
