@@ -7,4 +7,4 @@ process.on("exit", (e) => {
 });
 
  */
-require("../lib/server");
+require("../dist/server/server");

@@ -1,7 +1,7 @@
 import path from 'path';
 import resolveCwd from 'resolve-cwd';
 import { ServerResponse } from 'http';
-const { sendStreamJS } = require("../../lib/send");
+import { sendStreamJS } from './Utils';
 
 module.exports.moduleMiddleware = (id:string, res:ServerResponse) => {
   let modulePath = resolveCwd(id);

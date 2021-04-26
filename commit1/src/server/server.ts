@@ -3,10 +3,11 @@ import path from "path";
 import url from "url";
 import WebSocket from "ws";
 import serverHandler from "serve-handler";
-import { fileWatcher } from "fileWatcher";
+import { fileWatcher } from "./fileWatcher";
 import { rewrite } from "./moduleRewrite";
 import { IncomingMessage, ServerResponse, createServer } from "http";
-const hrm = fs.readFileSync(path.resolve(__dirname, "./hrm.js"));
+import { sendJs } from "./Utils";
+const hrm = fs.readFileSync(path.resolve(__dirname, "../client/hrm.js"));
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   const pathname = url.parse(req.url!).pathname!;
@@ -38,7 +39,6 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   });
 });
 
-const { sendJs } = require("./send");
 const { moduleMiddleware } = require("./moduleMiddleware");
 const { vueMiddleware } = require("./vueMiddle");
 const wss = new WebSocket.Server({ server });
