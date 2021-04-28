@@ -4,6 +4,8 @@ import path from "path";
 export interface ServerNotification {
   type: string;
   path?: string;
+  index?: number;
+  id?: string;
 }
 
 export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
@@ -13,7 +15,7 @@ export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
 
   watcher.on("change", (file) => {
     const resourcePath = "/" + path.relative(process.cwd(), file);
-    const notify = {
+    const notify: ServerNotification = {
       type: "",
       path: resourcePath,
     };
@@ -27,23 +29,41 @@ export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
         (descriptor.template && descriptor.template.content) !==
         (preDescriptor.template && preDescriptor.template.content)
       ) {
-        console.log(`[hmr:rerender] ${resourcePath}`);
+        // console.log(`[hmr:rerender] ${resourcePath}`);
         notify.type = "rerender";
         callback(notify);
         return;
       }
+
       if (
         (descriptor.script && descriptor.script.content) !==
-          preDescriptor.script &&
-        preDescriptor.script.content
+        (preDescriptor.script && preDescriptor.script.content)
       ) {
-        console.log(`[hmr:reload] ${resourcePath}`);
+        // console.log(`[hmr:reload] ${resourcePath}`);
         notify.type = "reload";
         callback(notify);
         return;
       }
+
+      if (descriptor.styles.length !== preDescriptor.styles.length) {
+        console.log(`[hmr:update-style]1 ${resourcePath}`);
+        notify.type = "update-style";
+        notify.index = descriptor.styles.length - 1;
+        callback(notify);
+        return;
+      } else {
+        descriptor.styles.forEach((styleItem, index) => {
+          if (styleItem.content !== preDescriptor.styles[index].content) {
+            console.log(`[hmr:update-style] ${resourcePath}`);
+            notify.type = "update-style";
+            notify.index = index;
+            callback(notify);
+            return;
+          }
+        });
+      }
     } else {
-      console.log(`[hmr:full-reload] ${resourcePath}`);
+      // console.log(`[hmr:full-reload] ${resourcePath}`);
       notify.type = "full-reload";
       callback(notify);
       return;

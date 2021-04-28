@@ -4,7 +4,7 @@ const socket = new WebSocket(`ws://${location.host}`);
 
 // Listen for messages
 socket.addEventListener("message", ({ data }) => {
-  const { type, path } = JSON.parse(data);
+  const { type, path, index } = JSON.parse(data);
   switch (type) {
     case "connected":
       console.log("ws热更新连接成功");
@@ -21,8 +21,12 @@ socket.addEventListener("message", ({ data }) => {
         console.log(`[lpze] ${path} rerender.`);
       });
       break;
+    case "update-style":
+      import(`${path}?index=${index}&type=style&t=${Date.now()}`);
+      break;
     case "full-reload":
       location.reload();
+      break;
   }
 });
 

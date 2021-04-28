@@ -1,9 +1,9 @@
-import path from 'path';
-import resolveCwd from 'resolve-cwd';
-import { ServerResponse } from 'http';
-import { sendStreamJS } from './Utils';
+import path from "path";
+import resolveCwd from "resolve-cwd";
+import { ServerResponse } from "http";
+import { sendStreamJS } from "./Utils";
 
-module.exports.moduleMiddleware = (id:string, res:ServerResponse) => {
+export const moduleMiddleware = (id: string, res: ServerResponse) => {
   let modulePath = resolveCwd(id);
   if (id === "vue") {
     modulePath = path.join(

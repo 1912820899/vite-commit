@@ -1,9 +1,13 @@
 <template>
-  <h1>提示</h1>
+  <h1 class="tes">提示</h1>
 </template>
 
 <script>
 export default {}
 </script>
 
-<style></style>
+<style scoped>
+  .tes{
+    background-color: gold;
+  }
+</style>

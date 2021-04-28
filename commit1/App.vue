@@ -1,7 +1,8 @@
 <template>
   <div class="">
-    <div>1,{{ dj }}</div>
-    <div>{{ kka }}</div>
+    <div class="bba">{{ dj }}</div>
+    <div class="test">{{ kka }}</div>
+    <div class="bbaaa">asd</div>
     <hello />
   </div>
 </template>
@@ -11,7 +12,7 @@ export default {
   data() {
     return {
       dj: "1222s",
-      kka: "duodueoaasadadasds",
+      kka: "1",
     };
   },
   components: {
@@ -19,8 +20,19 @@ export default {
   },
 }
 </script>
-<style>
-body {
+<style scoped>
+.test {
   background: red;
 }
+</style>
+
+<style >
+  .bba{
+    background: green;
+  }
+</style>
+<style >
+  .bbaa{
+    background: green;
+  }
 </style>

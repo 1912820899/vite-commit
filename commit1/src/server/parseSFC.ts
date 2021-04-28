@@ -1,6 +1,6 @@
 import fs from "fs";
-const { parse } = require("@vue/compiler-sfc");
-const cache = new Map();
+import { parse, SFCDescriptor } from "@vue/compiler-sfc";
+const cache = new Map<string, SFCDescriptor>();
 
 export const parseSFC = (filename: string, isCache = true) => {
   const content = fs.readFileSync(filename, "utf-8");
@@ -11,4 +11,4 @@ export const parseSFC = (filename: string, isCache = true) => {
     cache.set(filename, descriptor);
   }
   return { ...res, preDescriptor };
-}
+};

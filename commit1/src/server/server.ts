@@ -7,12 +7,12 @@ import { fileWatcher } from "./fileWatcher";
 import { rewrite } from "./moduleRewrite";
 import { IncomingMessage, ServerResponse, createServer } from "http";
 import { sendJs } from "./Utils";
-const hrm = fs.readFileSync(path.resolve(__dirname, "../client/hrm.js"));
+const hmr = fs.readFileSync(path.resolve(__dirname, "../client/hmr.js"));
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   const pathname = url.parse(req.url!).pathname!;
   if (pathname === "/__hrmClient") {
-    return sendJs(hrm, res);
+    return sendJs(hmr, res);
   } else if (pathname.startsWith("/__modules/")) {
     return moduleMiddleware(pathname.replace("/__modules/", ""), res);
   } else if (pathname.endsWith(".vue")) {
