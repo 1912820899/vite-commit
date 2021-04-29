@@ -30,10 +30,11 @@ export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
       descriptor.styles.forEach((s, i) => {
         if (s.scoped) hasScoped = true;
         code += `\n import ${JSON.stringify(
-          pathname + `?type=style&index=${i}`
+          pathname + `?type=style&index=${i}&t=${Date.now()}`
         )}`;
       });
     }
+
     if (hasScoped) {
       code += `\n__script.__scopeId = "data-v-${hash(pathname)}"`;
     }
@@ -48,12 +49,13 @@ export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
   const scoped = descriptor.styles.some((s) => s.scoped);
 
   if (type === "template") {
+    const id = `data-v-${hash(pathname)}`;
     const { code } = compileTemplate({
       source: descriptor.template?.content || "",
       filename,
-      id: `data-v-${hash(pathname)}`,
+      id: id,
       compilerOptions: {
-        scopeId: scoped ? `data-v-${hash(pathname)}` : null,
+        scopeId: scoped ? id : null,
         runtimeModuleName: "/__modules/vue",
       },
     });
@@ -66,6 +68,7 @@ export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
     const styleIndex = Number(index);
     const source = descriptor.styles[styleIndex].content || "";
     const id = hash(pathname);
+    console.log(pathname, descriptor.styles[styleIndex].scoped);
 
     const { code, errors } = compileStyle({
       source,
@@ -78,13 +81,14 @@ export const vueMiddleware = (req: IncomingMessage, res: ServerResponse) => {
     }
     return sendJs(
       `
-      let style = document.getElementById('data-v-${id}')
+      const id = "vue-style-${id}-${index}"
+      let style = document.getElementById(id)
       if(!style){
         style = document.createElement('style');
-        style.id = 'data-v-${id}';
+        style.id = id;
         document.head.appendChild(style);
       }
-      style.textContent += ${JSON.stringify(code)};
+      style.textContent = ${JSON.stringify(code)};
     `.trim(),
       res
     );

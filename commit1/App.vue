@@ -3,6 +3,7 @@
     <div class="bba">{{ dj }}</div>
     <div class="test">{{ kka }}</div>
     <div class="bbaaa">asd</div>
+    <div class="tes">ddd</div>
     <hello />
   </div>
 </template>
@@ -26,13 +27,11 @@ export default {
 }
 </style>
 
-<style >
+<style scoped>
   .bba{
     background: green;
   }
-</style>
-<style >
-  .bbaa{
-    background: green;
+  .bbaaa{
+    background: aqua;
   }
 </style>

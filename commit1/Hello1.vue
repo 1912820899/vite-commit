@@ -8,6 +8,6 @@ export default {}
 
 <style scoped>
   .tes{
-    background-color: gold;
+    background-color: gold !important;
   }
 </style>

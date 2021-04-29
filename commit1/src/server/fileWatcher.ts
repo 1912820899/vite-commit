@@ -1,6 +1,7 @@
 import chokidar from "chokidar";
 import { parseSFC } from "./parseSFC";
 import path from "path";
+import hash from "hash-sum";
 export interface ServerNotification {
   type: string;
   path?: string;
@@ -44,24 +45,35 @@ export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
         callback(notify);
         return;
       }
+      /* 新增或者删减scoped样式，需要重新渲染页面，因为scoped 已经被渲染到了dom上 */
+      if (
+        descriptor.styles.some((s) => s.scoped) !==
+        preDescriptor.styles.some((s) => s.scoped)
+      ) {
+        notify.type = "reload";
+        console.log("hmr:reload");
 
-      if (descriptor.styles.length !== preDescriptor.styles.length) {
-        console.log(`[hmr:update-style]1 ${resourcePath}`);
-        notify.type = "update-style";
-        notify.index = descriptor.styles.length - 1;
-        callback(notify);
-        return;
-      } else {
-        descriptor.styles.forEach((styleItem, index) => {
-          if (styleItem.content !== preDescriptor.styles[index].content) {
-            console.log(`[hmr:update-style] ${resourcePath}`);
-            notify.type = "update-style";
-            notify.index = index;
-            callback(notify);
-            return;
-          }
-        });
+        return callback(notify);
       }
+      descriptor.styles.forEach((styleItem, index) => {
+        if (
+          !preDescriptor.styles[index] ||
+          styleItem.content !== preDescriptor.styles[index].content
+        ) {
+          console.log(`[hmr:update-style] ${resourcePath}`);
+          notify.type = "update-style";
+          notify.index = index;
+          callback(notify);
+          return;
+        }
+      });
+      preDescriptor.styles.slice(descriptor.styles.length).forEach((_, i) => {
+        console.log('删除style');
+        
+        notify.type = "style-remove";
+        notify.id = `${hash(resourcePath)}-${i + descriptor.styles.length}`;
+        callback(notify);
+      });
     } else {
       // console.log(`[hmr:full-reload] ${resourcePath}`);
       notify.type = "full-reload";

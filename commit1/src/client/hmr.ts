@@ -4,7 +4,7 @@ const socket = new WebSocket(`ws://${location.host}`);
 
 // Listen for messages
 socket.addEventListener("message", ({ data }) => {
-  const { type, path, index } = JSON.parse(data);
+  const { type, path, index, id } = JSON.parse(data);
   switch (type) {
     case "connected":
       console.log("ws热更新连接成功");
@@ -23,6 +23,12 @@ socket.addEventListener("message", ({ data }) => {
       break;
     case "update-style":
       import(`${path}?index=${index}&type=style&t=${Date.now()}`);
+      break;
+    case "style-remove":
+      const style = document.getElementById(`vue-style-${id}`);
+      if (style) {
+        style.parentNode!.removeChild(style);
+      }
       break;
     case "full-reload":
       location.reload();
