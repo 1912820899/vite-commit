@@ -68,8 +68,6 @@ export const fileWatcher = (callback: (notify: ServerNotification) => void) => {
         }
       });
       preDescriptor.styles.slice(descriptor.styles.length).forEach((_, i) => {
-        console.log('删除style');
-        
         notify.type = "style-remove";
         notify.id = `${hash(resourcePath)}-${i + descriptor.styles.length}`;
         callback(notify);
