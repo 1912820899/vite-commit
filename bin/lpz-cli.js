@@ -8,3 +8,4 @@ process.on("exit", (e) => {
 
  */
 require("../dist/server/server");
+// console.log('hello');
