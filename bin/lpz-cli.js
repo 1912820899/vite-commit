@@ -7,5 +7,6 @@ process.on("exit", (e) => {
 });
 
  */
+console.log(process.version);
 require("../dist/server/server");
 // console.log('hello');

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "sourceMap": false,
-    "target": "esnext",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "declaration": true,
     "allowJs": false,

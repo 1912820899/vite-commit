@@ -55,6 +55,6 @@ fileWatcher((payload) => {
   sockets.forEach((socket) => socket.send(JSON.stringify(payload)));
 });
 
-server.listen(8899, () => {
+server.listen(8799, () => {
   console.log("启动成功 ");
 });

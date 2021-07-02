@@ -4,11 +4,11 @@
     <div class="test">{{ kka }}</div>
     <div class="bbaaa">asd</div>
     <div class="tes">ddd</div>
-    <hello />
+    <!-- <hello /> -->
   </div>
 </template>
 <script>
-import Hello from "./Hello1.vue";
+// import Hello from "./Hello1.vue";
 export default {
   data() {
     return {
@@ -17,7 +17,7 @@ export default {
     };
   },
   components: {
-    Hello,
+    // Hello,
   },
 }
 </script>
